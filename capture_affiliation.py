@@ -2,7 +2,7 @@
 # No arquivo de saída, a partir da linha com "------,-------" são os países que não puderam ser identificados
 # Usar no datawrapper apenas as linhas anteriores a essa
 
-# python3 capture_affiliation_v2.py dados/entrada_100.csv dados/normalized_countries_1.csv dados/countries_100.csv
+# python3 capture_affiliation.py dados/sample_metadata.csv dados/normalized_countries.csv dados/out.csv
 
 import sys
 import csv
