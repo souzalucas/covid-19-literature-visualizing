@@ -4,6 +4,7 @@
 
 # python3 capture_affiliation.py sample_metadata.csv normalized_countries.csv out.csv
 
+
 import sys
 import csv
 import json
@@ -23,7 +24,9 @@ count_countries_unrecognized = {}
 countries_list = []
 
 papers_with_identified_country = 0
-papers_with_not_identified_country = 0
+papers_without_identified_country = 0
+papers_with_json_file = 0
+count_files_json_per_paper = 0
 
 common_names = {
   "usa":           "United States of America", 
@@ -72,7 +75,11 @@ def open_csv_metadata():
 
 def analize_json_file(path):
 
+  global count_files_json_per_paper
+
   if path != '':
+
+    count_files_json_per_paper += 1
 
     with open(PATH_CORD_19 + path) as myfile:
         
@@ -183,13 +190,16 @@ def write_in_csv():
   with open(sys.argv[3][:-4]+"_log.txt", 'w') as file_countries_log:
 
     file_countries_log.write("Papers with identified country: " + str(papers_with_identified_country) + "\n")
-    file_countries_log.write("Papers without identified country: " + str(papers_with_not_identified_country))
+    file_countries_log.write("Papers without identified country: " + str(papers_without_identified_country) + "\n")
+    file_countries_log.write("Papers with json file: " + str(papers_with_json_file))
 
 
 def main():
 
   global papers_with_identified_country
-  global papers_with_not_identified_country
+  global papers_without_identified_country
+  global papers_with_json_file
+  global count_files_json_per_paper
 
   start = time.perf_counter()
 
@@ -204,6 +214,8 @@ def main():
 
     paths_json_files = row['pdf_json_files'].split("; ")
 
+    count_files_json_per_paper = 0
+
     # para cada arquivo json deste artigo
     for path in paths_json_files:
 
@@ -216,8 +228,10 @@ def main():
 
           recognize_country(country, countries_in_this_paper)
 
+    if count_files_json_per_paper > 0 : papers_with_json_file += 1
+
     if (len(countries_in_this_paper) > 0): papers_with_identified_country += 1
-    else: papers_with_not_identified_country += 1
+    else: papers_without_identified_country += 1
 
   end = time.perf_counter()
   runtime = (end-start)/60
