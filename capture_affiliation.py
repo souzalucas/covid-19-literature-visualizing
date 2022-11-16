@@ -27,19 +27,6 @@ papers_without_identified_country = 0
 papers_with_json_file = 0
 count_files_json_per_paper = 0
 
-common_names = {
-  "usa":           "United States of America", 
-  "u s a":         "United States of America", 
-  "u.s.a":         "United States of America", 
-  "united states": "United States of America", 
-  "u. s. a":       "United States of America", 
-  "uk":            "United Kingdom", 
-  "u.k":           "United Kingdom", 
-  "u k":           "United Kingdom",
-  "brasil":        "Brazil",
-  "iran":          "Islamic Republic of Iran"
-}
-
 def create_dictionary():
 
   global countries_list
