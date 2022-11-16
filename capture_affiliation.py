@@ -2,12 +2,13 @@
 # No arquivo de saída, a partir da linha com "------,-------" são os países que não puderam ser identificados
 # Usar no datawrapper apenas as linhas anteriores a essa
 
-# python3 capture_affiliation.py sample_metadata.csv normalized_countries.csv out.csv
+# python3 capture_affiliation_v2.py dados/entrada_100.csv dados/normalized_countries_1.csv dados/countries_100.csv
 
 import sys
 import csv
 import json
 from jsonpath_ng import parse
+import time
 
 PATH_CORD_19 = '/media/lucas/3D1CCA42663CADBE/cord-19_2022-06-02/2022-06-02/'
 
@@ -21,6 +22,9 @@ count_countries_unrecognized = {}
 
 countries_list = []
 
+papers_with_identified_country = 0
+papers_with_not_identified_country = 0
+
 common_names = {
   "usa":           "United States of America", 
   "u s a":         "United States of America", 
@@ -30,7 +34,8 @@ common_names = {
   "uk":            "United Kingdom", 
   "u.k":           "United Kingdom", 
   "u k":           "United Kingdom",
-  "china":         "China"
+  "brasil":        "Brazil",
+  "iran":          "Islamic Republic of Iran"
 }
 
 def create_dictionary():
@@ -117,12 +122,12 @@ def try_3(country, countries_in_this_paper):
 
   found = False
 
-  for key, value in common_names.items():
+  for key, value in normalized_countries.items():
     
     if(key in country): 
       
       add_country_in_dict(value, countries_in_this_paper, count_countries_recognized)
-      
+
       found = True
 
   return found
@@ -154,6 +159,7 @@ def recognize_country(country, countries_in_this_paper):
 
           add_country_in_dict(country, countries_in_this_paper, count_countries_unrecognized) if not recognized else ""
 
+
 def write_in_csv():
 
   with open(sys.argv[3], 'w', encoding='UTF8') as file_countries:
@@ -174,8 +180,18 @@ def write_in_csv():
 
       writer.writerow([key, value])
 
+  with open(sys.argv[3][:-4]+"_log.txt", 'w') as file_countries_log:
+
+    file_countries_log.write("Papers with identified country: " + str(papers_with_identified_country) + "\n")
+    file_countries_log.write("Papers without identified country: " + str(papers_with_not_identified_country))
+
 
 def main():
+
+  global papers_with_identified_country
+  global papers_with_not_identified_country
+
+  start = time.perf_counter()
 
   create_dictionary()
 
@@ -199,8 +215,16 @@ def main():
         for country in found_countries:
 
           recognize_country(country, countries_in_this_paper)
-    
+
+    if (len(countries_in_this_paper) > 0): papers_with_identified_country += 1
+    else: papers_with_not_identified_country += 1
+
+  end = time.perf_counter()
+  runtime = (end-start)/60
+  print(runtime)
+  
   # escrever em um arquivo csv
   write_in_csv()
+
 
 main()
