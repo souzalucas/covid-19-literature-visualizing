@@ -4,7 +4,6 @@
 
 # python3 capture_affiliation.py sample_metadata.csv normalized_countries.csv out.csv
 
-
 import sys
 import csv
 import json
