@@ -16,8 +16,6 @@ os.system('mkdir dados/split/bib')
 
 bib_file_names = []
 
-list_entries = [None] * 10
-
 csvfile = open(sys.argv[1], newline='')
 
 reader = csv.DictReader(csvfile)
