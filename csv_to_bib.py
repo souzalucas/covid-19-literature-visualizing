@@ -1,4 +1,4 @@
-#python3 csv_to_bib_1.py sample_metadata.csv
+#python3 csv_to_bib.py sample_metadata.csv
 
 import os
 import sys
