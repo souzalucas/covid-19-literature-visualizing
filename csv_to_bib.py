@@ -5,7 +5,7 @@ import sys
 import csv
 import rispy
 import time
-import fix_bibtex_errors_1
+import fix_bibtex_errors
 
 start_time = time.time()
 
