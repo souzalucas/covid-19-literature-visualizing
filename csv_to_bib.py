@@ -14,6 +14,8 @@ os.system('mkdir dados/split')
 os.system('mkdir dados/split/ris')
 os.system('mkdir dados/split/bib')
 
+N_MAX_AUTHORS_PER_PAPER = 100
+
 bib_file_names = []
 
 csvfile = open(sys.argv[1], newline='')
@@ -33,7 +35,7 @@ while (j < 10):
     for row in reader:
 
       list_authors = row['authors'].split("; ")
-      if (len(list_authors) > 100): continue
+      if (len(list_authors) > N_MAX_AUTHORS_PER_PAPER): continue
 
       publication_year = row['publish_time'].split("-")[0]
 
