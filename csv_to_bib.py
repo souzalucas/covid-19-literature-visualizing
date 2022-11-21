@@ -75,6 +75,6 @@ os.system('cat ' + file_names + '> dados/split/bib/full.bib')
 
 print("dados/split/bib/full.bib OK!!")
 
-fix_bibtex_errors_1.main("dados/split/bib/full.bib")
+fix_bibtex_errors.main("dados/split/bib/full.bib")
 
 print("--- %s min ---" % ((time.time() - start_time)/60))
